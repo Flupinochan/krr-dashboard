@@ -39,7 +39,9 @@ docker push ${IMAGE}:${TAG}
 
 ## Kubernetesデプロイ
 
-`http://<ノードの IP>:30015` を開く
+Podの配置先は、`mouse`と`nipogi` Nodeに限定している
+
+`http://<ノードの IP>:30016` を開く
 
 ```bash
 kubectl apply -f k8s/
