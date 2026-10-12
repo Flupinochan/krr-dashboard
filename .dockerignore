@@ -1,0 +1,7 @@
+.git
+tests
+k8s
+docs
+requirements-dev.txt
+**/__pycache__
+**/*.pyc

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>krr ダッシュボード</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>krr ダッシュボード</h1>
+    <div id="totals" class="totals" aria-label="全体の合計"></div>
+    <div class="topbar-actions">
+      <span id="freshness" class="freshness">読み込み中</span>
+      <button id="regenerate" type="button">再生成</button>
+      <a id="download" class="button-link" href="/api/download" download="krr.csv">CSVダウンロード</a>
+    </div>
+  </header>
+
+  <p id="banner" class="banner" hidden></p>
+
+  <main>
+    <section id="charts" class="charts" aria-label="グラフ"></section>
+
+    <section class="filters" aria-label="絞り込み">
+      <label>namespace
+        <select id="filter-namespace"><option value="">すべて</option></select>
+      </label>
+      <label>Severity
+        <select id="filter-severity"><option value="">すべて</option></select>
+      </label>
+      <label>Type
+        <select id="filter-type"><option value="">すべて</option></select>
+      </label>
+      <label class="grow">検索
+        <input id="filter-text" type="search" placeholder="名前またはコンテナ">
+      </label>
+      <details id="column-picker" class="column-picker">
+        <summary>表示列</summary>
+        <div class="column-panel">
+          <div id="column-options" class="column-options"></div>
+          <div class="column-buttons">
+            <button id="columns-reset" type="button" class="secondary">初期表示に戻す</button>
+            <button id="columns-show-all" type="button" class="secondary">すべて表示</button>
+          </div>
+        </div>
+      </details>
+      <span id="row-count" class="row-count"></span>
+    </section>
+
+    <div class="table-wrap">
+      <table id="table">
+        <thead></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </main>
+
+  <script src="charts.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: krr-dashboard-regenerate
+  namespace: default
+spec:
+  schedule: "0 0 * * *"
+  timeZone: Asia/Tokyo
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          restartPolicy: Never
+          automountServiceAccountToken: false
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 10001
+            runAsGroup: 10001
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+            - name: regenerate
+              image: metalmental/krr-dashboard:0.1.0
+              imagePullPolicy: Always
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities:
+                  drop:
+                    - ALL
+              command:
+                - python
+                - -c
+                - |
+                  import urllib.error
+                  import urllib.request
+
+                  request = urllib.request.Request(
+                      "http://krr-dashboard:8000/api/regenerate", method="POST"
+                  )
+                  try:
+                      urllib.request.urlopen(request, timeout=30)
+                  except urllib.error.HTTPError as error:
+                      # 409 は実行中のため成功扱いとする
+                      if error.code != 409:
+                          raise
+              resources:
+                requests:
+                  memory: 64Mi
+                limits:
+                  memory: 128Mi
