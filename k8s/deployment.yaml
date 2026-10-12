@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: krr-dashboard
-  namespace: default
+  namespace: krr-dashboard
 spec:
   replicas: 1
   strategy:
