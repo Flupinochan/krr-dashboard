@@ -23,6 +23,16 @@ spec:
         fsGroup: 10001
         seccompProfile:
           type: RuntimeDefault
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - mouse
+                      - nipogi
       containers:
         - name: krr-dashboard
           image: metalmental/krr-dashboard:0.1.0
